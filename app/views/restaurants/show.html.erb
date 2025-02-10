@@ -1,19 +1,24 @@
 <h1><%= @restaurant.name %></h1>
-<h3>Rating:</h3>
+<h3>Average rating: <% if @restaurant.reviews.any? %>
+    <%= (@restaurant.reviews.sum(:rating).to_f / @restaurant.reviews.length).round(1) %>/5
+  <% else %>
+    No ratings yet
+  <% end %>
+</h3>
 <p>Address : <%= @restaurant.address %></p>
 <p>Phone number : <%= @restaurant.phone_number %></p>
 
 
 <p><strong>Reviews</strong></p>
-<ul class="list-group">
+<ul class="list-group mb-3">
   <% @restaurant.reviews.each do |review| %>
     <li class="list-group-item">
+    <%= review.rating %>/5 -
     <%= review.content %>
-    <%= review.rating %>
     </li>
   <% end %>
 </ul>
 
 
-<%= link_to "Post a review", new_restaurant_review_path(@restaurant) %>
-<%= link_to "Back to restaurants", restaurants_path %>
+<%= link_to "Post a review", new_restaurant_review_path(@restaurant), class: "btn btn-primary" %>
+<%= link_to "Back to restaurants", restaurants_path, class: "btn btn-secondary" %>

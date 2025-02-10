@@ -1,7 +1,14 @@
 <h1>Restaurants</h1>
 
+<ul class="list-group mb-3">
 <% @restaurants.each do |restaurant| %>
-  <li><%= link_to restaurant.name, restaurant_path(restaurant) %> - rating</li>
+  <li class="list-group-item"><%= link_to restaurant.name, restaurant_path(restaurant) %> -
+  <% if restaurant.reviews.any? %>
+    <%= (restaurant.reviews.sum(:rating).to_f / restaurant.reviews.length).round(1) %>/5
+  <% else %>
+    No ratings yet
+  <% end %></li>
 <% end %>
+</ul>
 
-<%= link_to "Add a restaurant", new_restaurant_path  %>
+<%= link_to "Add a restaurant", new_restaurant_path, class: "btn btn-primary"  %>
