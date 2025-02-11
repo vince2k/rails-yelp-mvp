@@ -1,24 +1,40 @@
+<div class="d-flex align-items-center gap-3 mb-5">
 <h1><%= @restaurant.name %></h1>
-<h3>Average rating: <% if @restaurant.reviews.any? %>
+<%= link_to "Back to restaurants", restaurants_path, class: "btn btn-outline-secondary ms-auto" %>
+</div>
+
+<h6>Average rating: <% if @restaurant.reviews.any? %>
     <%= (@restaurant.reviews.sum(:rating).to_f / @restaurant.reviews.length).round(1) %>/5
   <% else %>
-    No ratings yet
+    <em> No ratings yet </em>
   <% end %>
-</h3>
+</h6>
 <p>Address : <%= @restaurant.address %></p>
 <p>Phone number : <%= @restaurant.phone_number %></p>
 
 
-<p><strong>Reviews</strong></p>
+<p><strong>Reviews : </strong></p>
 <ul class="list-group mb-3">
-  <% @restaurant.reviews.each do |review| %>
-    <li class="list-group-item">
-    <%= review.rating %>/5 -
-    <%= review.content %>
-    </li>
+  <% if @restaurant.reviews.any? %>
+    <% @restaurant.reviews.each do |review| %>
+      <li class="list-group-item">
+      <%= review.rating %>/5 -
+      <%= review.content %>
+      </li>
+    <% end %>
+  <% else %>
+    <em> No reviews yet </em>
   <% end %>
 </ul>
 
+<h3 class="mt-3">Post your review</h3>
 
-<%= link_to "Post a review", new_restaurant_review_path(@restaurant), class: "btn btn-primary" %>
-<%= link_to "Back to restaurants", restaurants_path, class: "btn btn-secondary" %>
+<%= simple_form_for([@restaurant, @review]) do |f|%>
+<div class="form-inputs">
+  <%= f.input :rating %>
+  <%= f.input :content %>
+</div>
+<div class="form-actions">
+  <%= f.button :submit, class: "btn btn-primary" %>
+</div>
+<% end %>

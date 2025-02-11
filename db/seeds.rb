@@ -1,4 +1,3 @@
-
 Restaurant.destroy_all
 
 restaurants = [
